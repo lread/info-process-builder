@@ -1,0 +1,67 @@
+= demo-process-builder-behavior
+
+== Rationale
+
+As a Clojure developer I am often confused by the command escaping rules when for Java's ProcessBuilder on the Windows platform.
+
+This little repo exists to explore what escaping might be required and when.
+
+Although it is Windows that has me confused, I also explore command escaping rules when invoking bash scripts and native executables on Linux and macOS.
+
+There are likely different/better ways to escape that what I've discovered here.
+
+== Method
+
+I've created little executables that echo the args they have received.
+
+Example output of such a script called with args `one` `two` `three`:
+
+[source]
+----
+argc: 3
+arg1: one
+arg2: two
+arg3: three
+----
+
+A variable in the equation is how these args get displayed.
+I think, but am not yet entirely confident, that I've got the right incantation to tell `.bat` and `.cmd` files not to interpret on echo, but a side effect is that args will be display `"with double quotes"`
+
+For Windows I explore:
+
+- `.ps1` - Powershell
+- `.bat` - Batch file
+- `.cmd` - Cmd file
+- `.exe` - Native exe
+
+Note that batch and cmd variants are identical and expected to behave the same.
+I'm including them both to verify that assumption is true.
+
+For Linux and macOS:
+
+- `.sh` - Bash script
+- Native exe
+
+
+A `ptest.clj` Clojure program launches these scripts with various args and is where I experiment with escaping rules.
+It might be more prudent, as I move forward, to make this a unit test.
+
+== Observations
+
+- On Windows, ProcessBuilder will invoke `.bat.`, `.cmd` and `.exe` files directly, but a Powershell `.ps1` script needs to be explicitly invoked via `powershell` executable.
+
+== Current Open Questions
+
+- The escape rules for `.bat` and `.cmd` are on the complex side.
+https://stackoverflow.com/a/4095133[This stackoverflow article] seems like it has a grasp on the complexities.
+I can't say I understand how to properly escape for these targets yet.
+
+- Escaping requirements depend on what, if anything, finally ends up being called by script/exe.
+
+- Does the shell that Java is invoked from have any affect?
+
+- UTF8 in command lines?
+
+- It might also be interesting to explore how ProcessBuilder effectively finds applications under Windows.
+For example to launch a native executable you don't need to specify the `.exe` extension.
+But for a script the extension is require, if I remember correctly.
