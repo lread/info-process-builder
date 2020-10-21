@@ -3,10 +3,22 @@
 
 == Rationale
 
-As a Clojure developer I used Java's ProcessBuilder to spawn scripts and command line applications.
+As a Clojure developer I use Java's https://docs.oracle.com/javase/8/docs/api/java/lang/ProcessBuilder.html[ProcessBuilder] to spawn scripts and command line applications.
 I'd like to better understand how it behaves.
 
-Command line escaping on Windows is what confuses me, but other behaviors might be explored in the future.
+Command line escaping on Windows is currently what confuses me, but other behaviors might be explored in the future.
+
+The command line escaping curiosity is borne from a Babashka script I was writing for rewrite-cljc and discussions continued with @borkdude's https://github.com/babashka/process/issues/2[babashka/process library].
+In my rewrite-cljc Babashka script, I wanted to pass the following clj-kondo config on the command line:
+
+[source,Clojure]
+----
+{:output {:include-files ["^src" "^test" "^script"]}}
+----
+After a few attempts to make this work on Windows, I gave up and moved the config from the command line to a file.
+
+For Windows developers who have embraced WSL2, maybe all these Windows escaping rules less of a concern?
+I am still curious.
 
 == Status
 
@@ -15,7 +27,7 @@ Initial notes, have barely started to understand. May return to study this more 
 == Command Line Escaping
 
 I find I  am often confused by the command escaping rules when for Java's ProcessBuilder on the Windows platform.
-Although it is Windows that has me confused, I also explore command escaping rules when invoking bash scripts and native executables on Linux and macOS.
+Although it is Windows that has me confused, I'll also explore command escaping rules when invoking bash scripts and native executables on Linux and macOS.
 
 There are likely different/better ways to what I've discovered here.
 I'll update this work as I learn more.
@@ -35,6 +47,7 @@ arg3: three
 ----
 
 A variable in the equation is how these args get displayed.
+Does the method of display affect the output?
 I think, but am not yet entirely confident, that I've got the right incantation to tell `.bat` and `.cmd` files not to interpret on `echo`, but a side effect is that args will be display `"with double quotes"`
 
 For Windows I explore:
@@ -58,7 +71,7 @@ It might be more prudent, as I move forward, to make this a unit test.
 
 === References
 
-Windows command line parsing is complex. Here are some references to work through those complexities:
+Windows command line parsing, it turns out, is complex. Here are some references to work through those complexities:
 
 ==== Java Bugs Filed
 
@@ -86,11 +99,12 @@ then we really can't change it.
 ____
 
 Which I'll paraphrase to: we can't generalize to a gong-show.
+I sympathize and empathize with the Java developers who had to contend with this.
 But I do wonder if modern Microsoft has stabilized here.
 
 === Current Java Sources
 
-From OpenJDK, we have:
+From OpenJDK source, we have:
 
 - https://github.com/openjdk/jdk/blob/master/src/java.base/windows/classes/java/lang/ProcessImpl.java[Windows version of ProcessImpl.java]
 - https://github.com/openjdk/jdk/blob/master/src/java.base/windows/native/libjava/ProcessImpl_md.c[Windows native PrcessImpl_md.c]
@@ -108,8 +122,22 @@ From OpenJDK, we have:
 
 === Exploring Windows Escaping
 
+For command line escaping we wonder what is happening with the following players:
+
+- Java
+- The Windows shell, if involved
+- Windows createProcessW
+- Windows OS
+
+That's a lot of wondering.
+
+In the following sections I'll use:
+
+- Command shell - to mean the shell invoked by `cmd.exe`
+- PowerShell - to mean the shell invoked by `powershell.exe`
+
 ==== Cmd & Bat
-Observe the following behavior under the Command Prompt shell:
+Observe the following behavior under the Command shell:
 
 [source,bat]
 ----
@@ -140,6 +168,10 @@ TODO...
 - On Windows, ProcessBuilder will invoke `.bat.`, `.cmd` and `.exe` files directly, but a Powershell `.ps1` script needs to be explicitly invoked via `powershell` executable.
 
 === Current Open Questions
+
+- What's with the caret? Some docs say the OS deals with this escape character. True?
+
+
 
 - The escape rules for `.bat` and `.cmd` are on the complex side.
 I can't say I understand how to properly escape for these targets yet.
