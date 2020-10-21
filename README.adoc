@@ -1,16 +1,22 @@
-= demo-process-builder-behavior
+= info-process-builder
+:toc:
 
 == Rationale
 
-As a Clojure developer I am often confused by the command escaping rules when for Java's ProcessBuilder on the Windows platform.
+As a Clojure developer I used Java's ProcessBuilder to spawn scripts and command line applications.
+I'd like to better understand how it behaves.
 
-This little repo exists to explore what escaping might be required and when.
+Command line escaping on Windows is what confuses me, but other behaviors might be explored in the future.
 
+== Command Line Escaping
+
+I find I  am often confused by the command escaping rules when for Java's ProcessBuilder on the Windows platform.
 Although it is Windows that has me confused, I also explore command escaping rules when invoking bash scripts and native executables on Linux and macOS.
 
-There are likely different/better ways to escape that what I've discovered here.
+There are likely different/better ways to what I've discovered here.
+I'll update this work as I learn more.
 
-== Method
+=== Method
 
 I've created little executables that echo the args they have received.
 
@@ -34,7 +40,7 @@ For Windows I explore:
 - `.cmd` - Cmd file
 - `.exe` - Native exe
 
-Note that batch and cmd variants are identical and expected to behave the same.
+Note that batch and cmd script variants are identical and expected to behave the same.
 I'm including them both to verify that assumption is true.
 
 For Linux and macOS:
@@ -46,14 +52,22 @@ For Linux and macOS:
 A `ptest.clj` Clojure program launches these scripts with various args and is where I experiment with escaping rules.
 It might be more prudent, as I move forward, to make this a unit test.
 
-== Observations
+=== References
+
+Windows command line parsing is a bit complex. Here are some references to work through those complexities:
+
+- http://daviddeley.com/autohotkey/parameters/parameters.htm[How Command Line Parameters Are Parsed, by David Deley]
+- http://www.windowsinspired.com/understanding-the-command-line-string-and-arguments-received-by-a-windows-program/[A Better Way To Understand Quoting and Escaping of Windows Command Line Arguments, by Windows Inspired]
+- http://www.windowsinspired.com/how-a-windows-programs-splits-its-command-line-into-individual-arguments/[How a Windows Program Splits Its Command Line Into Individual Arguments, by Windows Inspired]
+- https://stackoverflow.com/a/4095133[Stackoverflow answer, by dbenham]
+
+=== Observations
 
 - On Windows, ProcessBuilder will invoke `.bat.`, `.cmd` and `.exe` files directly, but a Powershell `.ps1` script needs to be explicitly invoked via `powershell` executable.
 
-== Current Open Questions
+=== Current Open Questions
 
 - The escape rules for `.bat` and `.cmd` are on the complex side.
-https://stackoverflow.com/a/4095133[This stackoverflow article] seems like it has a grasp on the complexities.
 I can't say I understand how to properly escape for these targets yet.
 
 - Escaping requirements depend on what, if anything, finally ends up being called by script/exe.
@@ -61,6 +75,8 @@ I can't say I understand how to properly escape for these targets yet.
 - Does the shell that Java is invoked from have any affect?
 
 - UTF8 in command lines?
+
+== Other areas of interest
 
 - It might also be interesting to explore how ProcessBuilder effectively finds applications under Windows.
 For example to launch a native executable you don't need to specify the `.exe` extension.
