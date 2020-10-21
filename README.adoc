@@ -22,7 +22,7 @@ I've created little executables that echo the args they have received.
 
 Example output of such a script called with args `one` `two` `three`:
 
-[source]
+[source,shell]
 ----
 argc: 3
 arg1: one
@@ -31,7 +31,7 @@ arg3: three
 ----
 
 A variable in the equation is how these args get displayed.
-I think, but am not yet entirely confident, that I've got the right incantation to tell `.bat` and `.cmd` files not to interpret on echo, but a side effect is that args will be display `"with double quotes"`
+I think, but am not yet entirely confident, that I've got the right incantation to tell `.bat` and `.cmd` files not to interpret on `echo`, but a side effect is that args will be display `"with double quotes"`
 
 For Windows I explore:
 
@@ -54,12 +54,82 @@ It might be more prudent, as I move forward, to make this a unit test.
 
 === References
 
-Windows command line parsing is a bit complex. Here are some references to work through those complexities:
+Windows command line parsing is complex. Here are some references to work through those complexities:
+
+==== Java Bugs Filed
+
+There have been many Java bugs filed against Windows behavior, here are a couple:
+
+- https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6511002[JDK-6511002 : (process) Document the auto-quoting when creating a Windows process; add winQuote, Oracle Java Bug Database]
+- https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6276512[JDK-6276512 : (process) Runtime.exec(cmd[\]) ignores quotes around arguments (win), Oracle Java Bug Database]
+
+The Java team seem have concluded that:
+
+[quote]
+____
+Unfortunately, the Windows API maps most directly to an interface where
+Runtime.exec(String) passes the arg string directly to the OS, but
+that method is specified to break up its arguments using StringTokenizer,
+which is surprisingly rarely what you want.
+
+It's very hard to make changes in this area, because
+- they change the behavior, and so are incompatible
+- the current behavior (how to pass strings to the OS) is unspecified, and so
+  is spec-compliant.
+
+If there's any way at all that the current behavior can be relied upon,
+then we really can't change it.
+____
+
+Which I'll paraphrase to: we can't generalize to a gong-show.
+But I do wonder if modern Microsoft has stabilized here.
+
+=== Current Java Sources
+
+From OpenJDK, we have:
+
+- https://github.com/openjdk/jdk/blob/master/src/java.base/windows/classes/java/lang/ProcessImpl.java[Windows version of ProcessImpl.java]
+- https://github.com/openjdk/jdk/blob/master/src/java.base/windows/native/libjava/ProcessImpl_md.c[Windows native PrcessImpl_md.c]
+
+==== From Microsoft
+
+- https://docs.microsoft.com/en-us/cpp/cpp/main-function-command-line-args[main function and command-line arguments, Microsoft Docs]
+
+==== Analysis from the Wild
 
 - http://daviddeley.com/autohotkey/parameters/parameters.htm[How Command Line Parameters Are Parsed, by David Deley]
 - http://www.windowsinspired.com/understanding-the-command-line-string-and-arguments-received-by-a-windows-program/[A Better Way To Understand Quoting and Escaping of Windows Command Line Arguments, by Windows Inspired]
 - http://www.windowsinspired.com/how-a-windows-programs-splits-its-command-line-into-individual-arguments/[How a Windows Program Splits Its Command Line Into Individual Arguments, by Windows Inspired]
 - https://stackoverflow.com/a/4095133[Stackoverflow answer, by dbenham]
+
+=== Exploring Windows Escaping
+
+==== Cmd & Bat
+Observe the following behavior under the Command Prompt shell:
+
+[source,bat]
+----
+>echo "Ar"g"um"e"n"t" W"it"h Sp"aces""
+"Ar"g"um"e"n"t" W"it"h Sp"aces""
+----
+
+[source,bat]
+----
+>exe-test.exe "Ar"g"um"e"n"t" W"it"h Sp"aces""
+argc: 1
+arg1: Argument With Spaces
+----
+
+This can seem baffling to the uninitiated.
+
+==== PowerShell
+
+PowerShell seems less complex.
+
+
+==== Direct Invocation
+
+TODO...
 
 === Observations
 
