@@ -1,5 +1,6 @@
 = info-process-builder
 :toc:
+:toclevels: 5
 
 == Rationale
 
@@ -102,7 +103,7 @@ Which I'll paraphrase to: we can't generalize to a gong-show.
 I sympathize and empathize with the Java developers who had to contend with this.
 But I do wonder if modern Microsoft has stabilized here.
 
-=== Current Java Sources
+==== Current Java Sources
 
 From OpenJDK source, we have:
 
