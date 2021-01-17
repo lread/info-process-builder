@@ -8,6 +8,10 @@ I'd like to better understand how it behaves.
 
 Command line escaping on Windows is what confuses me, but other behaviors might be explored in the future.
 
+== Status
+
+Initial notes, have barely started to understand. May return to study this more someday.
+
 == Command Line Escaping
 
 I find I  am often confused by the command escaping rules when for Java's ProcessBuilder on the Windows platform.
