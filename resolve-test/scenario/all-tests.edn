@@ -1,0 +1,381 @@
+[{:desc "How does `a` resolve from cwd?",
+  :tests
+  [{:program "a", :scenario {:cwd [:bat :cmd :com :exe :ps1]}}
+   {:program "a", :scenario {:cwd [:bat :cmd :exe :ps1]}}
+   {:program "a", :scenario {:cwd [:bat :cmd :ps1]}}
+   {:program "a", :scenario {:cwd [:cmd :ps1]}}
+   {:program "a", :scenario {:cwd [:ps1]}}]}
+ {:desc "How does `a.<ext>` resolve from cwd?",
+  :tests
+  [{:program "a.ps1", :scenario {:cwd [:bat :cmd :com :exe :ps1]}}
+   {:program "a.com", :scenario {:cwd [:bat :cmd :com :exe :ps1]}}
+   {:program "a.exe", :scenario {:cwd [:bat :cmd :com :exe :ps1]}}
+   {:program "a.bat", :scenario {:cwd [:bat :cmd :com :exe :ps1]}}
+   {:program "a.cmd", :scenario {:cwd [:bat :cmd :com :exe :ps1]}}]}
+ {:desc "How does `a.<ext>` resolve from cwd when also on PATH?",
+  :tests
+  [{:program "a.ps1",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.com",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.exe",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.bat",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.cmd",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.ps1", :scenario {:on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.com", :scenario {:on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.exe", :scenario {:on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.bat", :scenario {:on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.cmd",
+    :scenario {:on-path [:bat :cmd :com :exe :ps1]}}]}
+ {:desc "How does `a` resolve from cwd when also on `PATH`?",
+  :tests
+  ({:program "a",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a",
+    :scenario
+    {:cwd [:bat :cmd :exe :ps1], :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a",
+    :scenario
+    {:cwd [:bat :cmd :ps1], :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a",
+    :scenario {:cwd [:cmd :ps1], :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a",
+    :scenario {:cwd [:ps1], :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a",
+    :scenario {:cwd [:ps1], :on-path [:bat :cmd :com :exe]}}
+   {:program "a", :scenario {:cwd [:ps1], :on-path [:bat :cmd :exe]}}
+   {:program "a", :scenario {:cwd [:ps1], :on-path [:bat :cmd]}}
+   {:program "a", :scenario {:cwd [:ps1], :on-path [:cmd]}}
+   {:program "a", :scenario {:cwd [:ps1]}})}
+ {:desc "How does `.\\a` resolve from cwd?",
+  :tests
+  [{:program ".\\a", :scenario {:cwd [:bat :cmd :com :exe :ps1]}}
+   {:program ".\\a", :scenario {:cwd [:bat :cmd :com :exe]}}
+   {:program ".\\a", :scenario {:cwd [:bat :cmd :exe]}}
+   {:program ".\\a", :scenario {:cwd [:bat :cmd]}}
+   {:program ".\\a", :scenario {:cwd [:cmd]}}]}
+ {:desc "How does `.\\a.<ext>` resolve from cwd?",
+  :tests
+  [{:program ".\\a.ps1", :scenario {:cwd [:bat :cmd :com :exe :ps1]}}
+   {:program ".\\a.com", :scenario {:cwd [:bat :cmd :com :exe :ps1]}}
+   {:program ".\\a.exe", :scenario {:cwd [:bat :cmd :com :exe :ps1]}}
+   {:program ".\\a.bat", :scenario {:cwd [:bat :cmd :com :exe :ps1]}}
+   {:program ".\\a.cmd", :scenario {:cwd [:bat :cmd :com :exe :ps1]}}]}
+ {:desc "We expect absolute path of `a.<ext>` to work fine, do they?",
+  :tests
+  ({:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\cwd\\a.ps1",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\cwd\\a.com",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\cwd\\a.exe",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\cwd\\a.bat",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\cwd\\a.cmd",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\workdir\\a.ps1",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\workdir\\a.com",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\workdir\\a.exe",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\workdir\\a.bat",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\workdir\\a.cmd",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\on-path\\a.ps1",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\on-path\\a.com",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\on-path\\a.exe",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\on-path\\a.bat",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\on-path\\a.cmd",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}})}
+ {:desc "How does `a` with workdir resolve from cwd, workdir, `PATH`?",
+  :workdir "..\\workdir",
+  :tests
+  [{:program "a",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a",
+    :scenario
+    {:cwd [:bat :cmd :com :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a",
+    :scenario
+    {:cwd [:bat :cmd :com :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :ps1]}}]}
+ {:desc
+  "How does `a.<ext>` with workdir resolve from cwd, workdir, `PATH``?",
+  :workdir "..\\workdir",
+  :tests
+  [{:program "a.ps1",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.ps1",
+    :scenario
+    {:cwd [:bat :cmd :com :exe],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.com",
+    :scenario
+    {:cwd [:bat :cmd :com :exe],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.com",
+    :scenario
+    {:cwd [:bat :cmd :exe],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.exe",
+    :scenario
+    {:cwd [:bat :cmd :exe],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.exe",
+    :scenario
+    {:cwd [:bat :cmd],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.bat",
+    :scenario
+    {:cwd [:bat :cmd],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.bat",
+    :scenario
+    {:cwd [:bat :cmd],
+     :workdir [:cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program "a.cmd",
+    :scenario {:cwd [:cmd], :workdir [:cmd], :on-path [:cmd]}}
+   {:program "a.cmd", :scenario {:cwd [:cmd], :on-path [:cmd]}}]}
+ {:desc "How does `.\\a` with workdir resolve from cwd, workdir?",
+  :workdir "..\\workdir",
+  :tests
+  [{:program ".\\a",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program ".\\a",
+    :scenario
+    {:cwd [:bat :cmd :com :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}]}
+ {:desc
+  "How does `.\\a.<ext>` with workdir resolve from cwd, workdir?",
+  :workdir "..\\workdir",
+  :tests
+  [{:program ".\\a.ps1",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program ".\\a.com",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program ".\\a.exe",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program ".\\a.bat",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program ".\\a.bat",
+    :scenario
+    {:cwd [:cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program ".\\a.cmd",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program ".\\a.cmd",
+    :scenario
+    {:cwd [:bat :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}]}
+ {:desc
+  "We expect absolute path of `a.<ext>` with workdir to work fine, do they?",
+  :workdir "..\\workdir",
+  :tests
+  [{:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\cwd\\a.ps1",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\cwd\\a.com",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\cwd\\a.exe",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\cwd\\a.bat",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\cwd\\a.cmd",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\workdir\\a.ps1",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\workdir\\a.com",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\workdir\\a.exe",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\workdir\\a.bat",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\workdir\\a.cmd",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\on-path\\a.ps1",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\on-path\\a.com",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\on-path\\a.exe",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\on-path\\a.bat",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}
+   {:program
+    "Z:\\lread\\info-process-builder\\resolve-test\\scenario\\on-path\\a.cmd",
+    :scenario
+    {:cwd [:bat :cmd :com :exe :ps1],
+     :workdir [:bat :cmd :com :exe :ps1],
+     :on-path [:bat :cmd :com :exe :ps1]}}]}]

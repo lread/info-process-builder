@@ -1,0 +1,1025 @@
+==== How does `a` resolve from cwd?
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd exe ps1]
+workdir []
+on-path []
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd ps1]
+workdir []
+on-path []
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+*error* Cannot run program "a": CreateProcess error=2, The system cannot find the file specified
+
+cwd     [cmd ps1]
+workdir []
+on-path []
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+*error* Cannot run program "a": CreateProcess error=2, The system cannot find the file specified
+
+cwd     [ps1]
+workdir []
+on-path []
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+*error* Cannot run program "a": CreateProcess error=2, The system cannot find the file specified
+
+==== How does `a.<ext>` resolve from cwd?
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.ps1]
+
+running: a.ps1 dir: null
+*error* Cannot run program "a.ps1": CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.com]
+
+running: a.com dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.exe]
+
+running: a.exe dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.bat]
+
+running: a.bat dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.cmd]
+
+running: a.cmd dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+==== How does `a.<ext>` resolve from cwd when also on PATH?
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.ps1]
+
+running: a.ps1 dir: null
+*error* Cannot run program "a.ps1": CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.com]
+
+running: a.com dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.exe]
+
+running: a.exe dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.bat]
+
+running: a.bat dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.cmd]
+
+running: a.cmd dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     []
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.ps1]
+
+running: a.ps1 dir: null
+*error* Cannot run program "a.ps1": CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     []
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.com]
+
+running: a.com dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     []
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.exe]
+
+running: a.exe dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     []
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.bat]
+
+running: a.bat dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: on-path
+
+cwd     []
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.cmd]
+
+running: a.cmd dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: on-path
+
+==== How does `a` resolve from cwd when also on `PATH`?
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [cmd ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [ps1]
+workdir []
+on-path [bat cmd com exe]
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [ps1]
+workdir []
+on-path [bat cmd exe]
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [ps1]
+workdir []
+on-path [bat cmd]
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+*error* Cannot run program "a": CreateProcess error=2, The system cannot find the file specified
+
+cwd     [ps1]
+workdir []
+on-path [cmd]
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+*error* Cannot run program "a": CreateProcess error=2, The system cannot find the file specified
+
+cwd     [ps1]
+workdir []
+on-path []
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a]
+
+running: a dir: null
+*error* Cannot run program "a": CreateProcess error=2, The system cannot find the file specified
+
+==== How does `.\a` resolve from cwd?
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: .\a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a]
+
+running: .\a dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe]
+workdir []
+on-path []
+program: .\a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a]
+
+running: .\a dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd exe]
+workdir []
+on-path []
+program: .\a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a]
+
+running: .\a dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd]
+workdir []
+on-path []
+program: .\a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a]
+
+running: .\a dir: null
+*error* Cannot run program ".\a": CreateProcess error=2, The system cannot find the file specified
+
+cwd     [cmd]
+workdir []
+on-path []
+program: .\a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a]
+
+running: .\a dir: null
+*error* Cannot run program ".\a": CreateProcess error=2, The system cannot find the file specified
+
+==== How does `.\a.<ext>` resolve from cwd?
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: .\a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a.ps1]
+
+running: .\a.ps1 dir: null
+*error* Cannot run program ".\a.ps1": CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: .\a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a.com]
+
+running: .\a.com dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: .\a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a.exe]
+
+running: .\a.exe dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: .\a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a.bat]
+
+running: .\a.bat dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: .\a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a.cmd]
+
+running: .\a.cmd dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+==== We expect absolute path of `a.<ext>` to work fine, do they?
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1 dir: null
+*error* Cannot run program "Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1": CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.ps1]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.ps1 dir: null
+*error* Cannot run program "Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.ps1": CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.com]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.com dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.exe]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.exe dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.bat]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.bat dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.cmd]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.cmd dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.ps1]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.ps1 dir: null
+*error* Cannot run program "Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.ps1": CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: on-path
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd dir: null
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: on-path
+
+==== How does `a` with workdir resolve from cwd, workdir, `PATH`?
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a, ..\workdir]
+
+running: a dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd com ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a, ..\workdir]
+
+running: a dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd com ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com ps1]
+program: a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a, ..\workdir]
+
+running: a dir: ..\workdir
+*error* Cannot run program "a" (in directory "..\workdir"): CreateProcess error=2, The system cannot find the file specified
+
+==== How does `a.<ext>` with workdir resolve from cwd, workdir, `PATH``?
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.ps1, ..\workdir]
+
+running: a.ps1 dir: ..\workdir
+*error* Cannot run program "a.ps1" (in directory "..\workdir"): CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     [bat cmd com exe]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.ps1, ..\workdir]
+
+running: a.ps1 dir: ..\workdir
+*error* Cannot run program "a.ps1" (in directory "..\workdir"): CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     [bat cmd com exe]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.com, ..\workdir]
+
+running: a.com dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd exe]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.com, ..\workdir]
+
+running: a.com dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd exe]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.exe, ..\workdir]
+
+running: a.exe dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.exe, ..\workdir]
+
+running: a.exe dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.bat, ..\workdir]
+
+running: a.bat dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+realdir: workdir
+
+cwd     [bat cmd]
+workdir [cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.bat, ..\workdir]
+
+running: a.bat dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+realdir: on-path
+
+cwd     [cmd]
+workdir [cmd]
+on-path [cmd]
+program: a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.cmd, ..\workdir]
+
+running: a.cmd dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+realdir: workdir
+
+cwd     [cmd]
+workdir []
+on-path [cmd]
+program: a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [a.cmd, ..\workdir]
+
+running: a.cmd dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+realdir: on-path
+
+==== How does `.\a` with workdir resolve from cwd, workdir?
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: .\a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a, ..\workdir]
+
+running: .\a dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd com ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: .\a
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a, ..\workdir]
+
+running: .\a dir: ..\workdir
+*error* Cannot run program ".\a" (in directory "..\workdir"): CreateProcess error=2, The system cannot find the file specified
+
+==== How does `.\a.<ext>` with workdir resolve from cwd, workdir?
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: .\a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a.ps1, ..\workdir]
+
+running: .\a.ps1 dir: ..\workdir
+*error* Cannot run program ".\a.ps1" (in directory "..\workdir"): CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: .\a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a.com, ..\workdir]
+
+running: .\a.com dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: .\a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a.exe, ..\workdir]
+
+running: .\a.exe dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: .\a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a.bat, ..\workdir]
+
+running: .\a.bat dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+realdir: workdir
+
+cwd     [cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: .\a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a.bat, ..\workdir]
+
+running: .\a.bat dir: ..\workdir
+*error* Cannot run program ".\a.bat" (in directory "..\workdir"): CreateProcess error=2, The system cannot find the file specified
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: .\a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a.cmd, ..\workdir]
+
+running: .\a.cmd dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+realdir: workdir
+
+cwd     [bat com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: .\a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [.\a.cmd, ..\workdir]
+
+running: .\a.cmd dir: ..\workdir
+*error* Cannot run program ".\a.cmd" (in directory "..\workdir"): CreateProcess error=2, The system cannot find the file specified
+
+==== We expect absolute path of `a.<ext>` with workdir to work fine, do they?
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1 dir: ..\workdir
+*error* Cannot run program "Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1" (in directory "..\workdir"): CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+realdir: cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+realdir: cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.ps1, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.ps1 dir: ..\workdir
+*error* Cannot run program "Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.ps1" (in directory "..\workdir"): CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.com, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.com dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.exe, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.exe dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.bat, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.bat dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+realdir: workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.cmd, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.cmd dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+realdir: workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.ps1
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.ps1, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.ps1 dir: ..\workdir
+*error* Cannot run program "Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.ps1" (in directory "..\workdir"): CreateProcess error=193, %1 is not a valid Win32 application
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+realdir: on-path
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd
+cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+args: [Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd, ..\workdir]
+
+running: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd dir: ..\workdir
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
+realdir: on-path
+

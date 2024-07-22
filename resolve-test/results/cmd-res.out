@@ -1,0 +1,407 @@
+==== How does `a` resolve from cwd?
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd exe ps1]
+workdir []
+on-path []
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd ps1]
+workdir []
+on-path []
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [cmd ps1]
+workdir []
+on-path []
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [ps1]
+workdir []
+on-path []
+program: a
+'a' is not recognized as an internal or external command,
+operable program or batch file.
+
+==== How does `a.<ext>` resolve from cwd?
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: a.ps1
+fake-notepad.exe was called with args: [Z:\lread\info-process-builder\resolve-test\fake-notepad.exe Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1]
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: a.com
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: a.exe
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: a.bat
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: a.cmd
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+==== How does `a.<ext>` resolve from cwd when also on PATH?
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.ps1
+fake-notepad.exe was called with args: [Z:\lread\info-process-builder\resolve-test\fake-notepad.exe Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1]
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.com
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.exe
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.bat
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.cmd
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     []
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.ps1
+fake-notepad.exe was called with args: [Z:\lread\info-process-builder\resolve-test\fake-notepad.exe Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.ps1]
+
+cwd     []
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.com
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     []
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.exe
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     []
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.bat
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: on-path
+
+cwd     []
+workdir []
+on-path [bat cmd com exe ps1]
+program: a.cmd
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: on-path
+
+==== How does `a` resolve from cwd when also on `PATH`?
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd exe ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [cmd ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [ps1]
+workdir []
+on-path [bat cmd com exe ps1]
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [ps1]
+workdir []
+on-path [bat cmd com exe]
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [ps1]
+workdir []
+on-path [bat cmd exe]
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [ps1]
+workdir []
+on-path [bat cmd]
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: on-path
+
+cwd     [ps1]
+workdir []
+on-path [cmd]
+program: a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: on-path
+
+cwd     [ps1]
+workdir []
+on-path []
+program: a
+'a' is not recognized as an internal or external command,
+operable program or batch file.
+
+==== How does `.\a` resolve from cwd?
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: .\a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe]
+workdir []
+on-path []
+program: .\a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd exe]
+workdir []
+on-path []
+program: .\a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd]
+workdir []
+on-path []
+program: .\a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [cmd]
+workdir []
+on-path []
+program: .\a
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+==== How does `.\a.<ext>` resolve from cwd?
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: .\a.ps1
+fake-notepad.exe was called with args: [Z:\lread\info-process-builder\resolve-test\fake-notepad.exe Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1]
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: .\a.com
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: .\a.exe
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: .\a.bat
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [bat cmd com exe ps1]
+workdir []
+on-path []
+program: .\a.cmd
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+==== We expect absolute path of `a.<ext>` to work fine, do they?
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1
+fake-notepad.exe was called with args: [Z:\lread\info-process-builder\resolve-test\fake-notepad.exe Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.ps1]
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.ps1
+fake-notepad.exe was called with args: [Z:\lread\info-process-builder\resolve-test\fake-notepad.exe Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.ps1]
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.com
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.exe
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.bat
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.cmd
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\workdir\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: workdir
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.ps1
+fake-notepad.exe was called with args: [Z:\lread\info-process-builder\resolve-test\fake-notepad.exe Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.ps1]
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.bat
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: on-path
+
+cwd     [bat cmd com exe ps1]
+workdir [bat cmd com exe ps1]
+on-path [bat cmd com exe ps1]
+program: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd
+exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.cmd
+workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
+realdir: on-path
+

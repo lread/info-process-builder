@@ -1,425 +1,5 @@
-= info-process-builder
-:toc:
-:toclevels: 5
-
-== Rationale
-
-As a Clojure developer I use Java's https://docs.oracle.com/javase/8/docs/api/java/lang/ProcessBuilder.html[ProcessBuilder] to spawn scripts and command line applications.
-I'd like to better understand how it behaves.
-
-Windows <<command-line-escaping>> is what initially confused me (and still does), more recently I've become interested in <<program-resolution>>.
-
-[[command-line-escaping,command line escaping]]
-== Command Line Escaping
-
-Initial notes, have barely started to understand. May return to study this more someday.
-
-The command line escaping curiosity is borne from a Babashka script I was writing for rewrite-cljc and discussions continued with @borkdude's https://github.com/babashka/process/issues/2[babashka/process library].
-In my rewrite-cljc Babashka script, I wanted to pass the following clj-kondo config on the command line:
-
-[source,Clojure]
-----
-{:output {:include-files ["^src" "^test" "^script"]}}
-----
-After a few attempts to make this work on Windows, I gave up and moved the config from the command line to a file.
-
-For Windows developers who have embraced WSL2, maybe all these Windows escaping rules less of a concern?
-I am still curious.
-
-I find I  am often confused by the command escaping rules when for Java's ProcessBuilder on the Windows platform.
-Although it is Windows that has me confused, I'll also explore command escaping rules when invoking bash scripts and native executables on Linux and macOS.
-
-There are likely different/better ways to what I've discovered here.
-I'll update this work as I learn more.
-
-=== Method
-
-I've created little executables that echo the args they have received.
-
-Example output of such a script called with args `one` `two` `three`:
-
-[source,shell]
-----
-argc: 3
-arg1: one
-arg2: two
-arg3: three
-----
-
-A variable in the equation is how these args get displayed.
-Does the method of display affect the output?
-I think, but am not yet entirely confident, that I've got the right incantation to tell `.bat` and `.cmd` files not to interpret on `echo`, but a side effect is that args will be display `"with double quotes"`
-
-For Windows I explore:
-
-- `.ps1` - Powershell
-- `.bat` - Batch file
-- `.cmd` - Cmd file
-- `.exe` - Native exe
-
-Note that batch and cmd script variants are identical and expected to behave the same.
-I'm including them both to verify that assumption is true.
-
-For Linux and macOS:
-
-- `.sh` - Bash script
-- Native exe
-
-
-A `ptest.clj` Clojure program launches these scripts with various args and is where I experiment with escaping rules.
-It might be more prudent, as I move forward, to make this a unit test.
-
-=== References
-
-Windows command line parsing, it turns out, is complex. Here are some references to work through those complexities:
-
-==== Java Bugs Filed
-
-There have been many Java bugs filed against Windows behavior, here are a couple:
-
-- https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6511002[JDK-6511002 : (process) Document the auto-quoting when creating a Windows process; add winQuote, Oracle Java Bug Database]
-- https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6276512[JDK-6276512 : (process) Runtime.exec(cmd[\]) ignores quotes around arguments (win), Oracle Java Bug Database]
-
-The Java team seem have concluded that:
-
-[quote]
-____
-Unfortunately, the Windows API maps most directly to an interface where
-Runtime.exec(String) passes the arg string directly to the OS, but
-that method is specified to break up its arguments using StringTokenizer,
-which is surprisingly rarely what you want.
-
-It's very hard to make changes in this area, because
-- they change the behavior, and so are incompatible
-- the current behavior (how to pass strings to the OS) is unspecified, and so
-  is spec-compliant.
-
-If there's any way at all that the current behavior can be relied upon,
-then we really can't change it.
-____
-
-Which I'll paraphrase to: we can't generalize to a gong-show.
-I sympathize and empathize with the Java developers who had to contend with this.
-But I do wonder if modern Microsoft has stabilized here.
-
-==== Current Java Sources
-
-From OpenJDK source, we have:
-
-- https://github.com/openjdk/jdk/blob/master/src/java.base/windows/classes/java/lang/ProcessImpl.java[Windows version of ProcessImpl.java]
-- https://github.com/openjdk/jdk/blob/master/src/java.base/windows/native/libjava/ProcessImpl_md.c[Windows native PrcessImpl_md.c]
-
-==== From Microsoft
-
-- https://docs.microsoft.com/en-us/cpp/cpp/main-function-command-line-args[main function and command-line arguments, Microsoft Docs]
-
-==== Analysis from the Wild
-
-- http://daviddeley.com/autohotkey/parameters/parameters.htm[How Command Line Parameters Are Parsed, by David Deley]
-- http://www.windowsinspired.com/understanding-the-command-line-string-and-arguments-received-by-a-windows-program/[A Better Way To Understand Quoting and Escaping of Windows Command Line Arguments, by Windows Inspired]
-- http://www.windowsinspired.com/how-a-windows-programs-splits-its-command-line-into-individual-arguments/[How a Windows Program Splits Its Command Line Into Individual Arguments, by Windows Inspired]
-- https://stackoverflow.com/a/4095133[Stackoverflow answer, by dbenham]
-
-=== Exploring Windows Escaping
-
-For command line escaping we wonder what is happening with the following players:
-
-- Java
-- The Windows shell, if involved
-- Windows createProcessW
-- Windows OS
-
-That's a lot of wondering.
-
-In the following sections I'll use:
-
-- Command shell - to mean the shell invoked by `cmd.exe`
-- PowerShell - to mean the shell invoked by `powershell.exe`
-
-==== Cmd & Bat
-Observe the following behavior under the Command shell:
-
-[source,bat]
-----
->echo "Ar"g"um"e"n"t" W"it"h Sp"aces""
-"Ar"g"um"e"n"t" W"it"h Sp"aces""
-----
-
-[source,bat]
-----
->exe-test.exe "Ar"g"um"e"n"t" W"it"h Sp"aces""
-argc: 1
-arg1: Argument With Spaces
-----
-
-This can seem baffling to the uninitiated.
-
-==== PowerShell
-
-PowerShell seems less complex.
-
-
-==== Direct Invocation
-
-TODO...
-
-=== Observations
-
-- On Windows, ProcessBuilder will invoke `.bat.`, `.cmd` and `.exe` files directly, but a Powershell `.ps1` script needs to be explicitly invoked via `powershell` executable.
-
-=== Current Open Questions
-
-- What's with the caret? Some docs say the OS deals with this escape character. True?
-
-
-
-- The escape rules for `.bat` and `.cmd` are on the complex side.
-I can't say I understand how to properly escape for these targets yet.
-
-- Escaping requirements depend on what, if anything, finally ends up being called by script/exe.
-
-- Does the shell that Java is invoked from have any affect?
-
-- UTF8 in command lines?
-
-[[program-resolution,program resolution]]
-== Program Resolution
-
-How are programs found by ProcessBuilder on Windows?
-How does this compare with how programs are found when running PowerShell and CMD shells?
-Windows has suprised me in the past, so I'm going to explore cases that might seem obvious to those already familiar with how Windows works.
-
-We'll test using 3 distinct folders:
-
-* `cwd` - we'll always launch from this folder
-* `workdir` - we'll optionally specify this as the `directory` workdir for ProcessBuilder tests
-* `on-path` - we'll add this to our PATH
-
-The above folders are populated with variants of `print-dirs`.
-In the tables below, we'll describe what we've load up under the "Scenario" column, for example:
-
-----
-cwd     [ps1]
-workdir [bat cmd com exe ps1]
-on-path [bat cmd com exe ps1]
-----
-
-For easier to read results we'll rename `print-dirs` to `a`.
-Example output from running `a`:
-----
-exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.com
-workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
-----
-
-We'll shorten this output in our tables below to the easier to scan:
-
-----
-on-path\a.com
-cwd
-----
-
-=== A Simpler World: macOS & Linux
-
-For comparison, let's first have a look at how Linux behaves (we can assume macOS behaves the same).
-
-[cols="1,90,90,90"]
-|===
-| | Scenario | Bash | ProcessBuilder
-
-a| `a.sh`
-a|
-[.nowrap]
-----
-cwd     [sh]
-workdir [sh]
-on-path [sh]
-----
-a|
-----
-on-path/a.sh
-cwd
-----
-a|
-----
-on-path/a.sh
-cwd
-----
-
-a|[.nowrap]#`./a.sh`#
-a|
-[.nowrap]
-----
-cwd     [sh]
-workdir [sh]
-on-path [sh]
-----
-a|
-----
-cwd/a.sh
-cwd
-----
-a|
-----
-cwd/a.ash
-cwd
-----
-
-a|[.nowrap]#`$(readlink -f ../workdir/a.sh)`#
-(absolute path)
-a|
-[.nowrap]
-----
-cwd     [sh]
-workdir [sh]
-on-path [sh]
-----
-a|
-----
-workdir/a.sh
-cwd
-----
-a|
-----
-workdir/a.sh
-cwd
-----
-
-
-
-|===
-
-And when specifying a workdir:
-
-[cols="1,90,90"]
-|===
-| | Scenario | ProcessBuilder
-
-a| `a.sh`
-a|
-[.nowrap]
-----
-cwd     [sh]
-workdir [sh]
-on-path [sh]
-----
-a|
-----
-on-path/a.sh
-workdir
-----
-
-a|[.nowrap]#`./a.sh`#
-a|
-[.nowrap]
-----
-cwd     [sh]
-workdir [sh]
-on-path [sh]
-----
-a|
-----
-workdir/a.sh
-workdir
-----
-
-a|[.nowrap]#`$(readlink -f ../cwd/a.sh)`#
-(absolute path)
-a|
-[.nowrap]
-----
-cwd     [sh]
-workdir [sh]
-on-path [sh]
-----
-a|
-----
-cwd/a.sh
-workdir
-----
-
-|===
-
-Oh such sweet, consistent, and clearly understandable simplicity.
-
-* If program has no path prefix, `PATH` is searched.
-* If program has a relative path prefix, program is resolved against:
-** cwd
-** or, if specified via ProcessBuilder, `directory` workdir
-* If program has an absolute path, the absolute path is used.
-
-=== Windows
-
-Our scenario folders are populated with copies `.com`,`.exe`,`.bat`,`.cmd`,`.ps1` variants of `print-dirs`.
-
-Note that `.com` is obscure these days, and I don't know how to build a proper one, so `print-dirs.com` is actually just a copy of `print-dirs.exe`.
-
-Source for `print-dirs.exe` is in `print-dirs.go` which can be built on any OS via:
-
-[source,shell]
-----
-GOOS=windows GOARCH=amd64 go build -o print-dirs.exe print-dirs.go
-----
-
-Or if you want to build via docker (and apply tricks for smaller .exe)
-
-[source,shell]
-----
-docker run --rm \
-  -v "$PWD":/src \
-  -w /src \
-  devopsworks/golang-upx:latest \
-  bash -c 'GOOS=windows GOARCH=amd64 \
-    go build -ldflags "-s -w" -o print-dirs.exe print-dirs.go &&
-    upx --ultra-brute print-dirs.exe'
-----
-
-As mentioned above, we rename `print-dirs` to `a` when populating scenarios for briefer results.
-
-==== Observations & Notes
-
-All tests run on Windows 10 with all updates applied as of 2024-07-18.
-
-Program extension auto-resolution (in order):
-
-* PowerShell: `.ps1`,`.com`,`.exe`,`.bat`,`.cmd`
-* CMD Shell:  `.com`,`.exe`,`.bat`,`.cmd`
-* ProcessBuilder: `.exe`
-
-Directory auto-resolution (in order):
-
-* Powershell: `PATH`
-* CMD Shell: cwd, `PATH`
-* ProcessBuilder:
-** no workdir: cwd, `PATH`
-** with workdir:
-*** `.com`, `.exe`: cwd, `PATH` (resolving to cwd seems odd because we've specified a workdir)
-*** `.bat`, `.cmd`: workdir, `PATH` (but maybe intended to be `PATH`, not sure, buggy)
-
-When invoking `.\a.ps1` from a CMD shell, notepad launches with file contents.
-This kind of mucks up our testing, so I temporarily changed Windows to point to `fake-notepad.exe`.
-
-* Registry key: `HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1\Shell\Open\Command`
-* Old Registry value: `"C:\Windows\System32\notepad.exe" "%1"`
-
-Impact of host shell on ProcessBuilder:
-
-* I saw no difference between launching ProcessBuilder tests from CMD Shell or PowerShell.
-
-Impact of JDK version on ProcessBuilder:
-
-* I repeated tests on JDK versions 8, 11, 17, 21 and 22 and saw no difference.
-
 ==== How does `a` resolve from cwd?
 
-Nothing terribly suprising here.
-
-* Both CMD Shell and ProcessBuilder resolve `a` from the current working directory.
-* PowerShell, like linux/macOS does not automatically resolve from current working directory.
-* CMD Shell, of course, does not resolve to `a.ps1`.
-* Perhaps a bit suprising is that ProcessBuilder only resolves to `a.exe`.
-
-
-[cols="8%,23%,23%,23%,23%"]
 |===
 | | Scenario | Cmd Shell | PowerShell | ProcessBuilder
 
@@ -505,12 +85,6 @@ a|<not found>
 
 ==== How does `a.<ext>` resolve from cwd?
 
-Nothing terribly suprising here:
-
-* CMD Shell cannot run `.ps1` files, and neither can ProcessBuilder.
-* PowerShell, like linux/macOS does not automatically resolve from current working directory.
-
-[cols="8%,23%,23%,23%,23%"]
 |===
 | | Scenario | Cmd Shell | PowerShell | ProcessBuilder
 
@@ -604,7 +178,6 @@ cwd
 
 ==== How does `a.<ext>` resolve from cwd when also on PATH?
 
-[cols="8%,23%,23%,23%,23%"]
 |===
 | | Scenario | Cmd Shell | PowerShell | ProcessBuilder
 
@@ -823,16 +396,8 @@ cwd
 ----
 |===
 
-==== How does `a` resolve from cwd when also on PATH?
+==== How does `a` resolve from cwd when also on `PATH`?
 
-Nothing terribly suprising:
-
-* We see again that ProcessBuilder only resolves `a.exe`
-* We see again that ProcessBuilder and CMD Shell prefer cwd over `PATH`
-* As expected, PowerShell resolves to `a.ps1`
-* We see again that PowerShell behaves more like macOS/Linux.
-
-[cols="8%,23%,23%,23%,23%"]
 |===
 | | Scenario | Cmd Shell | PowerShell | ProcessBuilder
 
@@ -1049,11 +614,6 @@ a|<not found>
 
 ==== How does `.\a` resolve from cwd?
 
-Nothing terribly surprising:
-
-* We've already learned that ProcessBuilder only resolves to `.exe`
-
-[cols="8%,23%,23%,23%,23%"]
 |===
 | | Scenario | Cmd Shell | PowerShell | ProcessBuilder
 
@@ -1167,12 +727,6 @@ a|<not found>
 
 ==== How does `.\a.<ext>` resolve from cwd?
 
-No real suprises:
-
-* It is expected that CMD Shell cannot run `.ps1` scripts.
-* ProcessBuilder cannot run `.ps1` scripts directly either.
-
-[cols="8%,23%,23%,23%,23%"]
 |===
 | | Scenario | Cmd Shell | PowerShell | ProcessBuilder
 
@@ -1286,12 +840,6 @@ cwd
 
 ==== We expect absolute path of `a.<ext>` to work fine, do they?
 
-Yes they do (note that I abbreviated absolute paths with `...` for easier reading).
-
-* We did not expect CMD Shell to run a `.ps1`
-* We've already learned that PowerShell does not run `.ps1` scripts directly.
-
-[cols="8%,23%,23%,23%,23%"]
 |===
 | | Scenario | Cmd Shell | PowerShell | ProcessBuilder
 
@@ -1618,15 +1166,7 @@ cwd
 |===
 
 ==== How does `a` with workdir resolve from cwd, workdir, `PATH`?
-Specifying a workdir only applies to ProcessBuilder so we leave out comparisons with CMD Shell and PowerShell.
 
-This matches up with what we learned so far:
-
-* ProcessBuilder prefers cwd (overidden here with workdir) then `PATH`
-* ProcessBuilder only resolves to `.exe`
-
-
-[cols="10%,45%,45%"]
 |===
 | | Scenario | ProcessBuilder
 
@@ -1666,11 +1206,8 @@ on-path: [bat cmd com ps1]
 a|<not found>
 |===
 
-==== How does `a.<ext>` with workdir resolve from cwd, workdir, `PATH`?
+==== How does `a.<ext>` with workdir resolve from cwd, workdir, `PATH``?
 
-This has some real suprises, see comments in the table.
-
-[cols="10%,45%,45%"]
 |===
 | | Scenario | ProcessBuilder
 
@@ -1704,8 +1241,6 @@ a|[.nowrap]
 cwd\a.com
 workdir
 ----
-Since we have specified a workdir, it is surprising that this resolves to cwd.
-Less suprising would have been resolution to workdir, or PATH.
 
 a|[.nowrap]#`+a.com+`#
 a|[.nowrap]
@@ -1733,10 +1268,6 @@ cwd\a.exe
 workdir
 ----
 
-Since we have specified a workdir, it is surprising that this resolves to cwd.
-Less suprising would have been resolution to workdir, or PATH.
-Consistent with `a.com`.
-
 a|[.nowrap]#`+a.exe+`#
 a|[.nowrap]
 ----
@@ -1762,7 +1293,6 @@ a|[.nowrap]
 workdir\a.bat
 workdir
 ----
-Inconsistent with `a.com`, `a.exe`.
 
 a|[.nowrap]#`+a.bat+`#
 a|[.nowrap]
@@ -1776,7 +1306,6 @@ a|[.nowrap]
 on-path\a.bat
 workdir
 ----
-Ok, favors workdir then PATH.
 
 a|[.nowrap]#`+a.cmd+`#
 a|[.nowrap]
@@ -1790,7 +1319,6 @@ a|[.nowrap]
 workdir\a.cmd
 workdir
 ----
-Same behavior as `a.bat`.
 
 a|[.nowrap]#`+a.cmd+`#
 a|[.nowrap]
@@ -1804,16 +1332,10 @@ a|[.nowrap]
 on-path\a.cmd
 workdir
 ----
-Same behavior as `a.bat`.
 |===
 
-==== How does `.\a` resolve from cwd, workdir?
+==== How does `.\a` with workdir resolve from cwd, workdir?
 
-No surprises, we've already learned:
-
-* ProcessBuilder only resolves to `.exe`
-
-[cols="10%,45%,45%"]
 |===
 | | Scenario | ProcessBuilder
 
@@ -1842,9 +1364,6 @@ a|<not found>
 
 ==== How does `.\a.<ext>` with workdir resolve from cwd, workdir?
 
-Some surprises here, see comments in table.
-
-[cols="10%,45%,45%"]
 |===
 | | Scenario | ProcessBuilder
 
@@ -1869,8 +1388,6 @@ a|[.nowrap]
 cwd\a.com
 workdir
 ----
-Consistent with `a.com`, but like `a.com`, suprising.
-We've specified a workdir, why are we resolving from cwd.
 
 a|[.nowrap]#`+.\a.exe+`#
 a|[.nowrap]
@@ -1884,8 +1401,6 @@ a|[.nowrap]
 cwd\a.exe
 workdir
 ----
-Consistent with `a.exe`, but like `a.exe`, suprising.
-We've specified a workdir, why are we resolving from cwd.
 
 a|[.nowrap]#`+.\a.bat+`#
 a|[.nowrap]
@@ -1900,8 +1415,6 @@ workdir\a.bat
 workdir
 ----
 
-Consistent with `a.bat`.
-
 a|[.nowrap]#`+.\a.bat+`#
 a|[.nowrap]
 ----
@@ -1910,9 +1423,6 @@ workdir: [bat cmd com exe ps1]
 on-path: [bat cmd com exe ps1]
 ----
 a|<not found>
-
-Happened to notice this, so showing what seems like a bug in ProcessBuilder.
-(Since workdir is preferred why is the absence of `a.bat` in cwd causing an error?)
 
 a|[.nowrap]#`+.\a.cmd+`#
 a|[.nowrap]
@@ -1935,19 +1445,10 @@ workdir: [bat cmd com exe ps1]
 on-path: [bat cmd com exe ps1]
 ----
 a|<not found>
-
-Happened to notice this, so showing what seems like a bug in ProcessBuilder.
-(Since workdir is preferred why is the absence of `a.cmd` in cwd causing an error?)
-
 |===
 
 ==== We expect absolute path of `a.<ext>` with workdir to work fine, do they?
 
-Yes they do (note that I abbreviated absolute paths with `...` for easier reading).
-
-* We've already learned that PowerShell does not run `.ps1` scripts directly.
-
-[cols="10%,45%,45%"]
 |===
 | | Scenario | ProcessBuilder
 
@@ -2134,141 +1635,3 @@ on-path\a.cmd
 workdir
 ----
 |===
-
-=== Running Tests
-
-These tests only explore behaviour they do not verify behaviour against some expectations.
-
-From `resolve-test` dir, gen test scripts with:
-[source,shell]
-----
-bb gen_resolve_tests.clj
-----
-
-Run CMD Shell tests from a CMD shell via:
-
-* `run-cmd-tests.bat` - CMD shell tests
-* `run-pb-cmd-tests.bat` - Run ProcessBuilder tests (from CMD)
-
-Run Powershell tests from a Powershell via:
-
-* `run-pwr-tests.ps1` - PowerShell tests
-* `run-pb-pwr-tests.ps1` - Run ProcessBuilder tests (from PowerShell)
-
-Why do we run ProcessBuilder from both CMD and PowerShell?
-I was curious to see any effects on resolving if the launching shell was different.
-(I found no differences)
-
-The `run-pb-*` tests should be run against each jdk version you are interested in testing against.
-(I found no differences on jdk8, 11, 17 and 21)
-
-All raw output is saved under `results`.
-
-
-Other source files:
-
-* `PBResolveTest.java` - Our launcher for ProcessBuilder
-* `scenario.clj` - A bb script to setup our test scenario
-* `+print-dirs.*+` - Our target programs to launch (copied to `a.*`) when loaded into scenario dirs
-* `fake-notepad.go` - A dummy for notepad.exe
-* `java-version.clj` - A wee script to print out java version in short form
-* `compare_results.clj` - Compares the ProcessBuilder test results (across shells and JDKs), they should all be the same.
-* `summarize.clj` - Summarizes the results in to `results/summary.adoc`.
-I pasted these results into this doc and annotated with observations.
-
-=== Manual Tests
-If you want to poke around here's some tips.
-We assume you are starting from the `resolve-test` dir.
-
-==== CMD Shell
-
-Fire up CMD Shell.
-Alter the PATH
-
-[source,shell]
-----
-cd scenario
-rmdir /S /Q cwd workdir on-path
-mkdir cwd workdir on-path
-set PATH=%CD%\on-path;%PATH%
-cd cwd
-----
-
-Setup a scenario via:
-[source,shell]
-----
-> bb ..\..\scenario.clj set --cwd=bat,com,cmd,ps1 --workdir=exe,ps1 --on-path=exe
-cwd     [bat cmd com ps1]
-workdir [exe ps1]
-on-path [exe]
-----
-
-And launch `a` however you see fit:
-[source,sell]
-----
-> a
-exepath: Z:\lread\info-process-builder\resolve-test\scenario\cwd\a.com
-workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
-> a.exe
-exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
-workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
-----
-
-==== PowerShell
-
-Fire up a PowerShell.
-
-[source,shell]
-----
-cd scenario
-mkdir cwd
-$env:PATH = "$PWD\on-path;$env:PATH"
-cd cwd
-----
-
-Run scenarios and tests as described in CMD Shell above.
-
-==== ProcessBuilder
-
-Recompile java sources:
-[source,shell]
-----
-javac PBResolveTest.java
-----
-
-Setup your PATH as directed above for CMD Shell or PowerShell above.
-
-Setup scenario as described in CMD Shell above.
-
-Run ProcessBuilder tests from `scenario\cwd` like so:
-
-[source,sell]
-----
-> java -cp ..\.. PBResolveTest a
-cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
-args: [a]
-
-running: a dir: null
-exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
-workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
-
-> java -c ..\.. PBResolveTest a.exe
-cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
-args: [a.exe]
-
-running: a.exe dir: null
-exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
-workdir: Z:\lread\info-process-builder\resolve-test\scenario\cwd
-----
-
-Optionally specify a workdir as the 2nd arg:
-[source,shell]
-----
->java -cp ..\.. PBResolveTest a.exe ..\workdir
-cwd: Z:\lread\info-process-builder\resolve-test\scenario\cwd
-args: [a.exe, ..\workdir]
-
-running: a.exe dir: ..\workdir
-exepath: Z:\lread\info-process-builder\resolve-test\scenario\on-path\a.exe
-workdir: Z:\lread\info-process-builder\resolve-test\scenario\workdir
-----

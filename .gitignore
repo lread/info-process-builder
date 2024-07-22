@@ -1,3 +1,7 @@
 .nrepl-port
+.cpcache
 exe-test
 exe-test.exe
+/resolve-test/scenario/cwd
+/resolve-test/scenario/workdir
+/resolve-test/scenario/on-path
